@@ -15,10 +15,9 @@ class MyProblem:
 def main():
     number_of_fitness_evaluations = 1000
     num_workers = 4
-    my_multi_processor_fitness_caller = MultiprocessorFitnessCaller(num_workers)
-    nmmso = Nmmso(MyProblem(), fitness_caller=my_multi_processor_fitness_caller)
-    my_result = nmmso.run(number_of_fitness_evaluations)
-    my_multi_processor_fitness_caller.finish()
+    with MultiprocessorFitnessCaller(num_workers) as my_multi_processor_fitness_caller:
+        nmmso = Nmmso(MyProblem(), fitness_caller=my_multi_processor_fitness_caller)
+        my_result = nmmso.run(number_of_fitness_evaluations)
 
     for mode_result in my_result:
         print("Mode at {} has value {}".format(mode_result.location, mode_result.value))
